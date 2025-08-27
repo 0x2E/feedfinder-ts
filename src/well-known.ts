@@ -31,7 +31,6 @@ export async function tryWellKnown(
       const feed = await parseRSSUrl(targetURL, options);
 
       if (!isEmptyFeed(feed)) {
-        feed.link = targetURL; // Use the actual URL that worked
         feeds.push(feed);
       }
     } catch (error) {
@@ -52,7 +51,6 @@ export async function tryWellKnown(
           const feed = await parseRSSUrl(targetURL, options);
 
           if (!isEmptyFeed(feed)) {
-            feed.link = targetURL;
             feeds.push(feed);
           }
         } catch (error) {
@@ -79,7 +77,14 @@ async function parseRSSUrl(
       return { title: "", link: "" };
     }
 
-    return parseRSSContent(response.text);
+    const feed = parseRSSContent(response.text);
+    
+    // Always use the actual RSS URL as the link, not the link from RSS content
+    if (feed.title) {
+      feed.link = url;
+    }
+    
+    return feed;
   } catch (error) {
     console.debug(`Failed to parse RSS from ${url}:`, error);
     return { title: "", link: "" };

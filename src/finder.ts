@@ -73,9 +73,8 @@ export class FeedFinder {
       // If no HTML feeds found, try parsing as RSS/Atom directly
       const rssFeed = parseRSSContent(content);
       if (!isEmptyFeed(rssFeed)) {
-        if (!rssFeed.link) {
-          rssFeed.link = this.targetURL.href;
-        }
+        // Always use the RSS URL as the feed link, not the website link from RSS content
+        rssFeed.link = this.targetURL.href;
         return [rssFeed];
       }
 
