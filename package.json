@@ -1,6 +1,6 @@
 {
   "name": "feedfinder-ts",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A TypeScript library for finding RSS and Atom feeds on websites",
   "type": "module",
   "main": "dist/index.cjs",
