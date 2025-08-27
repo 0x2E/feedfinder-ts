@@ -4,10 +4,31 @@ import type { Feed } from "./types.js";
 import { absURL } from "./utils.js";
 
 /**
+ * Check if content is valid RSS/Atom XML
+ */
+function isValidRSSContent(content: string): boolean {
+  // Basic XML structure check
+  const trimmedContent = content.trim();
+  
+  // Must start with XML declaration or root element
+  if (!trimmedContent.startsWith('<?xml') && !trimmedContent.startsWith('<rss') && !trimmedContent.startsWith('<feed')) {
+    return false;
+  }
+  
+  // Must contain RSS or Atom root elements
+  return trimmedContent.includes('<rss') || trimmedContent.includes('<feed');
+}
+
+/**
  * Parse RSS/Atom content from XML
  */
 export function parseRSSContent(content: string): Feed {
   try {
+    // First check if content looks like RSS/Atom XML
+    if (!isValidRSSContent(content)) {
+      return { title: "", link: "" };
+    }
+
     const parser = new XMLParser({
       ignoreAttributes: false,
       attributeNamePrefix: "@_",

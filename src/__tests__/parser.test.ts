@@ -36,6 +36,24 @@ describe("Parser", () => {
       expect(result.title).toBe("");
       expect(result.link).toBe("");
     });
+
+    it("should not parse HTML content as RSS feed", () => {
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Regular HTML Page</title>
+          </head>
+          <body>
+            <h1>This is a regular HTML page</h1>
+            <p>Not an RSS feed</p>
+          </body>
+        </html>`;
+
+      const result = parseRSSContent(htmlContent);
+      expect(result.title).toBe("");
+      expect(result.link).toBe("");
+    });
   });
 
   describe("parseHTMLContent", () => {
